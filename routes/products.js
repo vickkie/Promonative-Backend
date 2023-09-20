@@ -1,10 +1,16 @@
-const express = require('express'); // Import Express.js
-const router = express.Router(); // Create a new router instance
+const express = require('express');
+const router = express.Router();
 const productController = require('../controllers/productsControllers');
+
+// Add middleware to parse URL-encoded parameters
+router.use(express.urlencoded({ extended: true }));
+
+// The search route
+router.get('/search/:key', productController.searchProducts);
 
 router.get('/', productController.getAllProduct);
 router.get('/:id', productController.getProduct);
-router.get('/search', productController.searchProducts);
+
 router.post('/', productController.createProduct);
 
 module.exports = router;
