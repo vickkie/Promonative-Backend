@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require('mongoose');
 const app = express()
 const productRouter = require('./routes/products');
-const port = 3000;
+const port = 9000;
 
 dotenv.config();
 mongoose.connect(process.env.MONGO_URL).then(() => console.log('Database connected')).catch((err) => console.log(err));
