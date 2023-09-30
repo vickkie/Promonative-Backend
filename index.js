@@ -3,16 +3,13 @@ const dotenv = require("dotenv");
 const cors = require('cors');
 const mongoose = require("mongoose");
 const app = express()
-// Enable CORS
-app.use(cors());
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
-    );
-    next();
-  });
+
+app.use(cors({
+  origin: 'http://localhost:9000', // Allow requests from http://localhost:9000
+  credentials: true,
+}));
+
+  
 const productRouter = require('./routes/products');
 const port = 9000;
 
