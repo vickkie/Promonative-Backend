@@ -10,7 +10,7 @@ router.use(express.urlencoded({ extended: true }));
 // The search route
 router.get('/search/:key', productController.searchProducts);
 
-router.get('/', productController.getAllProduct);
+router.get("/", productController.getAllProduct);
 router.get('/:id', productController.getProduct);
 
 router.post('/', productController.createProduct);
