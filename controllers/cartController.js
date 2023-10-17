@@ -41,11 +41,39 @@ module.exports = {
     },
 
 
-    getCart: async (req, res) => { },
+    getCart: async (req, res) => {
+
+        const { userId } = req.params.id
+        try {
+            const cart = Cart.find({ userId })
+                .populate('products.cartItem', "__id title imageUrl price supplier ");
+            res.status(200).json(cart)
+
+        } catch (error) {
+            res.status(500).json(error)
+        }
+    },
 
 
     deleteToCartItem: async (req, res) => {
-        const { userId, cartItem } = req.body;
+
+        const cartItemId = req.params.cartItemId;
+
+        try {
+            const updatedCart = await Cart.findOneAndUpdate(
+                { "products._id": cartItemId },
+                { $pull: { products: { _id: cartItemId } } },
+                { new: true }
+            )
+
+            if (!updatedCart) {
+                return res.status(404).json("Cart item not found")
+            }
+
+            res.status(200).json(updatedCart);
+        } catch (error) {
+            res.status(500).json(error)
+        }
     },
 
 
@@ -55,7 +83,41 @@ module.exports = {
 
         try {
 
-        } catch (error) { }
+            const cart = Cart.findOne({ userId });
+            if (!cart) {
+                res.status(404).json("Cart not found");
+            }
+
+            const existingProduct = cart.products.find(
+                (product) => product.cartItem.toString() === cartItem
+            );
+
+            if (!existingProduct) {
+                res.status(404).json("Product not found");
+            }
+
+            if (existingProduct.quantity === 1) {
+                cart.products = cart.products.filter(
+                    (product) => product.cartItem.toString() !== cartItem
+                )
+            } else {
+                existingProduct.quantity -= 1.
+            }
+
+            await cart.save();
+
+            if (existingProduct.quantity === 0) {
+                await Cart.updateOne(
+                    { userId },
+                    { $pull: { products: { cartItem } } }
+                )
+            }
+
+            res.status(200).json("Product Updated")
+
+        } catch (error) {
+            res.status(500).json(error)
+        }
     }
 
 
