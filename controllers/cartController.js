@@ -23,7 +23,7 @@ module.exports = {
                 await cart.save();
                 res.status(200).json("Product added to cart")
             } else {
-                const newCart = newCart({
+                const newCart = new Cart({
                     userId,
                     products: [{
                         cartItem, quantity: quantity
@@ -43,9 +43,10 @@ module.exports = {
 
     getCart: async (req, res) => {
 
-        const { userId } = req.params.id
+        const  userId  = req.params.id
+
         try {
-            const cart = Cart.find({ userId })
+            const cart = await Cart.find({ userId })
                 .populate('products.cartItem', "__id title imageUrl price supplier ");
             res.status(200).json(cart)
 
@@ -78,47 +79,45 @@ module.exports = {
 
 
     decrementCartItem: async (req, res) => {
-
         const { userId, cartItem } = req.body;
-
+    
         try {
-
-            const cart = Cart.findOne({ userId });
+            const cart = await Cart.findOne({ userId });
             if (!cart) {
-                res.status(404).json("Cart not found");
+                return res.status(404).json("Cart not found");
             }
-
+    
             const existingProduct = cart.products.find(
                 (product) => product.cartItem.toString() === cartItem
             );
-
+    
             if (!existingProduct) {
-                res.status(404).json("Product not found");
+                return res.status(404).json("Product not found");
             }
-
+    
             if (existingProduct.quantity === 1) {
                 cart.products = cart.products.filter(
                     (product) => product.cartItem.toString() !== cartItem
-                )
+                );
             } else {
-                existingProduct.quantity -= 1.
+                existingProduct.quantity -= 1;
             }
-
+    
             await cart.save();
-
+    
             if (existingProduct.quantity === 0) {
                 await Cart.updateOne(
                     { userId },
                     { $pull: { products: { cartItem } } }
-                )
+                );
             }
-
-            res.status(200).json("Product Updated")
-
+    
+            res.status(200).json("Product Updated");
         } catch (error) {
-            res.status(500).json(error)
+            res.status(500).json(error);
         }
     }
+    
 
 
 
