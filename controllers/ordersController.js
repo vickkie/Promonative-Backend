@@ -14,7 +14,7 @@ module.exports = {
                     select: "-description -product_location"
                 }).exec();
 
-            res.status(200).json(userOrders)
+            res.status(200).json(userOrders);
 
         } catch (error) {
 

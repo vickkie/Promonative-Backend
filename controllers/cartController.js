@@ -41,9 +41,10 @@ module.exports = {
     },
 
 
+
     getCart: async (req, res) => {
 
-        const  userId  = req.params.id
+        const userId = req.params.id
 
         try {
             const cart = await Cart.find({ userId })
