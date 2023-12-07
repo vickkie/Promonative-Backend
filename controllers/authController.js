@@ -2,6 +2,7 @@ const User = require('../models/User');
 const CryptoJs = require('crypto-js');
 const jwt = require('jsonwebtoken');
 
+
 module.exports = {
 
     createUser: async (req, res) => {
@@ -55,9 +56,3 @@ module.exports = {
     },
 
 };
-
-
-
-
-
-
