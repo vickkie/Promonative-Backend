@@ -8,4 +8,5 @@ Historical Reference: This repository serves as a historical reference for the p
 Legacy Code: Review or refer to the code and implementation details as needed for understanding the evolution of the backend architecture.
 
 ## Contact
-For any inquiries or issues related to the legacy codebase, please contact [hypercritical.vercel.app].
+For any inquiries or issues related to the legacy codebase, please contact [! Hypercritical studio](https://hypercritical.vercel.app).
+
